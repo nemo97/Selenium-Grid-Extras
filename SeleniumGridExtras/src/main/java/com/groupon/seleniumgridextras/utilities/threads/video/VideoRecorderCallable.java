@@ -71,9 +71,9 @@ public class VideoRecorderCallable implements Callable {
         // screen.  It's part of Java AWT
         final Robot robot = new Robot();
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
-        final Rectangle screenBounds = new Rectangle(toolkit.getScreenSize());
+//        final Rectangle screenBounds = new Rectangle(toolkit.getScreenSize());
 
-        screenBounds.setBounds(0, 0, dimension.width, dimension.height);
+//        screenBounds.setBounds(0, 0, dimension.width, dimension.height);
         // First, let's make a IMediaWriter to write the file.
         // Note we're writing to a temp file.  This is to prevent it from being
         // downloaded while we're mid-write.
@@ -88,7 +88,7 @@ public class VideoRecorderCallable implements Callable {
         // FRAME_RATE.
         writer.addVideoStream(0, 0, ICodec.ID.CODEC_ID_H264,
                 FRAME_RATE,
-                screenBounds.width, screenBounds.height);
+                dimension.width, dimension.height);
 
         logger
                 .info("Starting video recording for session " + getSessionId() + " to " + outputDir
@@ -221,8 +221,17 @@ public class VideoRecorderCallable implements Callable {
                     ScreenshotUtility
                             .getResizedScreenshot(RuntimeConfig.getConfig().getVideoRecording().getWidth(),
                                     RuntimeConfig.getConfig().getVideoRecording().getHeight());
-            dimension = new Dimension(sample.getWidth(), sample.getHeight());
-        } catch (AWTException e) {
+            int w = sample.getWidth();
+            int h = sample.getHeight();
+            while (w % 2 != 0){
+                w -= 1;
+            }
+
+            while(h % 2 != 0){
+                h -= 1;
+            }
+            dimension = new Dimension(w, h);
+        } catch (Exception e) {
             e.printStackTrace();
             logger.equals(e);
             dimension =

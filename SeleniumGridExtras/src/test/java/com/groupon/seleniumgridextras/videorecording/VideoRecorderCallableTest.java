@@ -174,9 +174,9 @@ public class VideoRecorderCallableTest {
 
     @Test
     public void testRecordVideoAndDeleteOldMovies() throws Exception {
-        if (!ImageProcessorTest.testIfDimasComputer()){
-            return;
-        }
+//        if (!ImageProcessorTest.testIfDimasComputer()){
+//            return;
+//        }
 
         if (RuntimeConfig.getOS().hasGUI()) {
             ExecutorService cachedPool = Executors.newCachedThreadPool();
@@ -200,7 +200,7 @@ public class VideoRecorderCallableTest {
     }
 
     private void recordVideo(ExecutorService cachedPool, String session) throws InterruptedException, ExecutionException {
-        VideoRecorderCallable video = new VideoRecorderCallable(session, 60);
+        VideoRecorderCallable video = new VideoRecorderCallable(session, 10060);
         Future<String> future = cachedPool.submit(video);
         video.stop();
         future.get(); //wait for thread to finish
